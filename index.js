@@ -1,5 +1,7 @@
 const fs = require('fs')
+const { homedir } = require('os')
 const { cwd, stdin, stdout } = require('process')
+const { cursorTo } = require('readline')
 
 const getUsername = (argsArr) => {
   const param = '--username='
@@ -13,6 +15,7 @@ const getUsername = (argsArr) => {
 
 const filename = () => {
   const username = getUsername(process.argv)
+  let currentDir = homedir()
 
   const operations = {
     '.exit': (isSigint) => {
@@ -25,12 +28,12 @@ const filename = () => {
       process.exit()
     },
   }
-
   if (!username) {
     console.log('Enter correct username with --username=your_username')
     return
   }
   console.log(`Welcome to the File Manager, ${username}!`)
+  console.log(`You are currently in ${currentDir}`)
 
   stdin.on('data', chunk => {
     const command = chunk.toString().trim()
