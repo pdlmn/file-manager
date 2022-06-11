@@ -30,6 +30,7 @@ const filename = () => {
     console.log('Enter correct username with --username=your_username')
     return
   }
+  console.log(`Welcome to the File Manager, ${username}!`)
 
   stdin.on('data', chunk => {
     const command = chunk.toString().trim()
