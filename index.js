@@ -1,9 +1,9 @@
 const fs = require('fs')
 const { cwd, stdin, stdout } = require('process')
 
-const getUsername = () => {
+const getUsername = (argsArr) => {
   const param = '--username='
-  const username = process.argv.find(n => n.includes(param))
+  const username = argsArr.find(n => n.includes(param))
   if (!username) {
     return null
   }
@@ -12,11 +12,11 @@ const getUsername = () => {
 }
 
 const filename = () => {
-  const username = getUsername()
+  const username = getUsername(process.argv)
 
   const operations = {
     '.exit': (isSigint) => {
-      let exitText = `Bye, ${username}!`
+      let exitText = `Thank you for using File Manager, ${username}!`
       // adds addition new line for sigint event so it looks prettier
       if (isSigint) {
         exitText = '\n' + exitText
