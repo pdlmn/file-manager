@@ -17,6 +17,10 @@ const filename = () => {
   const username = getUsername(process.argv)
   let currentDir = homedir()
 
+  const showPwd = () => {
+    console.log(`You are currently in ${currentDir}`)
+  }
+
   const operations = {
     '.exit': (isSigint) => {
       let exitText = `Thank you for using File Manager, ${username}!`
@@ -32,8 +36,9 @@ const filename = () => {
     console.log('Enter correct username with --username=your_username')
     return
   }
+
   console.log(`Welcome to the File Manager, ${username}!`)
-  console.log(`You are currently in ${currentDir}`)
+  showPwd()
 
   stdin.on('data', chunk => {
     const command = chunk.toString().trim()
