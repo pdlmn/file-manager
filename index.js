@@ -28,7 +28,7 @@ const filename = () => {
       }
       console.log(exitText)
       process.exit()
-    },
+    }
   }
 
   if (!username) {
@@ -44,7 +44,11 @@ const filename = () => {
       console.log('Invalid input')
       return
     }
-    operations[command]()
+    try {
+      operations[command]()
+    } catch {
+      console.log('Operation failed')
+    }
   }
 
   stdin.on('data', chunk => {
