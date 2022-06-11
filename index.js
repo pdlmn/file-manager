@@ -1,5 +1,6 @@
 const fs = require('fs')
 const { homedir } = require('os')
+const { resolve } = require('path')
 const { cwd, stdin, stdout } = require('process')
 const { cursorTo } = require('readline')
 
@@ -28,6 +29,9 @@ const filename = () => {
       }
       console.log(exitText)
       process.exit()
+    },
+    up: () => {
+      currentDir = resolve(currentDir, '..')
     }
   }
 
@@ -37,6 +41,7 @@ const filename = () => {
   }
 
   console.log(`Welcome to the File Manager, ${username}!`)
+  showPwd()
 
   const doOperation = chunk => {
     const command = chunk.toString().trim()
