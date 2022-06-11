@@ -1,8 +1,6 @@
-const fs = require('fs')
-const { homedir } = require('os')
-const { resolve } = require('path')
-const { cwd, stdin, stdout } = require('process')
-const { cursorTo } = require('readline')
+import path from 'path'
+import { homedir } from 'os'
+const { cwd, stdin, stdout } = process
 
 const getUsername = (argsArr) => {
   const param = '--username='
@@ -30,9 +28,7 @@ const filename = () => {
       console.log(exitText)
       process.exit()
     },
-    up: () => {
-      currentDir = resolve(currentDir, '..')
-    }
+    up: () => currentDir = path.resolve(currentDir, '..')
   }
 
   if (!username) {

@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/pdlmn/file-manager/issues"
   },
-  "homepage": "https://github.com/pdlmn/file-manager#readme"
+  "homepage": "https://github.com/pdlmn/file-manager#readme",
+  "type": "module"
 }
