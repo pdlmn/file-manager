@@ -23,7 +23,7 @@ const filename = () => {
       }
       console.log(exitText)
       process.exit()
-    }
+    },
   }
 
   if (!username) {
@@ -34,9 +34,11 @@ const filename = () => {
 
   stdin.on('data', chunk => {
     const command = chunk.toString().trim()
-    if (operations[command]) {
-      operations[command]()
+    if (!operations[command]) {
+      console.log('Invalid input')
+      return
     }
+    operations[command]()
   })
 
   process.on('SIGINT', () => {
