@@ -76,12 +76,24 @@ const filename = () => {
     rn: async (args) => {
       const oldName = args[0]
       const newName = args[1]
+      if (!await fileExists(path.resolve(currentDir, oldName))) {
+        console.log('Operation failed')
+        return
+      }
       fs.rename(
         path.resolve(currentDir, oldName),
         path.resolve(currentDir, newName)
       )
+    },
+    cp: async (args) => {
+      if (!args[0] || !args[1]) {
+        console.log('Operation failed')
+        return
+      }
+      const srcFile = path.resolve(currentDir, args[0])
+      const destFile = path.resolve(currentDir, args[1])
+      fs.cp(srcFile, destFile, { recursive: true })
     }
-
   }
 
   if (!username) {
