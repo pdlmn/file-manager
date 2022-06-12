@@ -36,6 +36,10 @@ const filename = () => {
     },
     up: async () => currentDir = path.resolve(currentDir, '..'),
     cd: async (args) => {
+      if (!args[0]) {
+        console.log('Operation failed')
+        return
+      }
       const newDir = path.resolve(currentDir, args[0])
       if (!await fileExists(newDir)) {
         console.log('Operation failed')
@@ -49,6 +53,10 @@ const filename = () => {
     },
     cat: async (args) => {
       const file = args[0]
+      if (!file) {
+        console.log('Operation failed')
+        return
+      }
       const filePath = path.resolve(currentDir, file)
       if (!await fileExists(filePath)) {
         console.log('Operation failed')
@@ -66,6 +74,10 @@ const filename = () => {
     },
     add: async (args) => {
       const file = args[0]
+      if (!file) {
+        console.log('Operation failed')
+        return
+      }
       const filePath = path.resolve(currentDir, file)
       if (await fileExists(filePath)) {
         console.log('Operation failed')
@@ -111,9 +123,9 @@ const filename = () => {
       }
       await fs.rm(file, { recursive: true })
     },
-    // mv: async (args) => {
-    //   // if ()
-    // }
+    mv: async (args) => {
+      operations.rn(args)
+    }
   }
 
   if (!username) {
