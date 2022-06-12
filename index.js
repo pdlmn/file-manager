@@ -3,6 +3,7 @@ import fs from 'fs/promises'
 import os from 'os'
 import { homedir } from 'os'
 import { createReadStream } from 'fs'
+import { createHash } from 'crypto'
 const { cwd, stdin, stdout } = process
 
 const getUsername = (argsArr) => {
@@ -143,6 +144,20 @@ const filename = () => {
       '--architecture': () => {
         console.log(os.arch())
       },
+    },
+    hash: (args) => {
+      const file = args[0]
+      const rs = createReadStream(path.resolve(currentDir, file))
+      const hash = createHash('sha256')
+      let data
+      rs.on('data', (data) => {
+        hash.update(data)
+      })
+      rs.on('end', () => {
+        data = hash.digest('hex')
+        console.log(data)
+        showPwd()
+      })
     }
   }
 
@@ -162,7 +177,7 @@ const filename = () => {
       console.log('Invalid input')
       return
     }
-    if (typeof operations[command] === 'string') {
+    if (typeof operations[command] === 'function') {
       await operations[command](args)
     } else if (typeof operations[command] === 'object') {
       const subCommand = args[0]
