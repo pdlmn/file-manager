@@ -130,7 +130,19 @@ const filename = () => {
     os: {
       '--EOL': () => {
         console.log(JSON.stringify(os.EOL))
-      }
+      },
+      '--cpus': () => {
+        console.log(os.cpus())
+      },
+      '--homedir': () => {
+        console.log(homedir())
+      },
+      '--username': () => {
+        console.log(os.userInfo().username)
+      },
+      '--architecture': () => {
+        console.log(os.arch())
+      },
     }
   }
 
@@ -153,7 +165,12 @@ const filename = () => {
     if (typeof operations[command] === 'string') {
       await operations[command](args)
     } else if (typeof operations[command] === 'object') {
-      await operations[command][args[0]]()
+      const subCommand = args[0]
+      if (!subCommand || !operations[command][subCommand]) {
+        console.log('Please input os command')
+        return
+      }
+      await operations[command][subCommand]()
     }
   }
 
