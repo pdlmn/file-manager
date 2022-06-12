@@ -76,7 +76,8 @@ const filename = () => {
     rn: async (args) => {
       const oldName = args[0]
       const newName = args[1]
-      if (!await fileExists(path.resolve(currentDir, oldName))) {
+      if (!await fileExists(path.resolve(currentDir, oldName)) ||
+          !oldName) {
         console.log('Operation failed')
         return
       }
@@ -92,6 +93,10 @@ const filename = () => {
       }
       const srcFile = path.resolve(currentDir, args[0])
       const destFile = path.resolve(currentDir, args[1])
+      if (!await fileExists(path.resolve(srcFile))) {
+        console.log('Operation failed')
+        return
+      }
       await fs.cp(srcFile, destFile, { recursive: true })
     },
     rm: async (args) => {
@@ -105,7 +110,10 @@ const filename = () => {
         return
       }
       await fs.rm(file, { recursive: true })
-    }
+    },
+    // mv: async (args) => {
+    //   // if ()
+    // }
   }
 
   if (!username) {
