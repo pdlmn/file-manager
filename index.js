@@ -2,8 +2,10 @@ import path from 'path'
 import fs from 'fs/promises'
 import os from 'os'
 import { homedir } from 'os'
-import { createReadStream } from 'fs'
+import { createReadStream, createWriteStream } from 'fs'
 import { createHash } from 'crypto'
+import { createBrotliCompress, createBrotliDecompress } from 'zlib'
+import { pipeline } from 'stream'
 const { cwd, stdin, stdout } = process
 
 const getUsername = (argsArr) => {
@@ -157,6 +159,36 @@ const filename = () => {
         data = hash.digest('hex')
         console.log(data)
         showPwd()
+      })
+    },
+    compress: async (args) => {
+      if (!args[0] || !args[1]) {
+        console.log('Operation failed')
+        return
+      }
+      const src = createReadStream(path.resolve(currentDir, args[0]))
+      const dest = createWriteStream(path.resolve(currentDir, args[1]))
+      const brotli = createBrotliCompress()
+
+      pipeline(src, brotli, dest, (err) => {
+        if (err) {
+          console.log(err)
+        }
+      })
+    },
+    decompress: async (args) => {
+      if (!args[0] || !args[1]) {
+        console.log('Operation failed')
+        return
+      }
+      const src = createReadStream(path.resolve(currentDir, args[0]))
+      const dest = createWriteStream(path.resolve(currentDir, args[1]))
+      const brotli = createBrotliDecompress()
+
+      pipeline(src, brotli, dest, (err) => {
+        if (err) {
+          console.log(err)
+        }
       })
     }
   }
