@@ -162,7 +162,7 @@ const filename = () => {
       })
     },
     compress: async (args) => {
-      if (!args[0] || !args[1]) {
+      if (!args[0] || !args[1] || !await fileExists(path.resolve(currentDir, args[0]))) {
         console.log('Operation failed')
         return
       }
@@ -177,7 +177,7 @@ const filename = () => {
       })
     },
     decompress: async (args) => {
-      if (!args[0] || !args[1]) {
+      if (!args[0] || !args[1] || !await fileExists(path.resolve(currentDir, args[0]))) {
         console.log('Operation failed')
         return
       }
