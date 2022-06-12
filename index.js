@@ -92,7 +92,19 @@ const filename = () => {
       }
       const srcFile = path.resolve(currentDir, args[0])
       const destFile = path.resolve(currentDir, args[1])
-      fs.cp(srcFile, destFile, { recursive: true })
+      await fs.cp(srcFile, destFile, { recursive: true })
+    },
+    rm: async (args) => {
+      if (!args[0]) {
+        console.log('Operation failed')
+        return
+      }
+      const file = path.resolve(currentDir, args[0])
+      if (!await fileExists(file)) {
+        console.log('Operation failed')
+        return
+      }
+      await fs.rm(file, { recursive: true })
     }
   }
 
