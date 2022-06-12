@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs/promises'
 import { homedir } from 'os'
+import { createReadStream } from 'fs'
 const { cwd, stdin, stdout } = process
 
 const getUsername = (argsArr) => {
@@ -41,6 +42,32 @@ const filename = () => {
         return
       }
       currentDir = newDir
+    },
+    ls: async () => {
+      const files = await fs.readdir(currentDir)
+      console.log(files)
+    },
+    cat: async (args) => {
+      const file = args[0]
+      const filePath = path.resolve(currentDir, file)
+      if (!await fileExists(filePath)) {
+        console.log('Operation failed')
+        return
+      }
+      const rs = createReadStream(filePath)
+      let data = ''
+      rs.on('data', chunk => {
+        data += chunk.toString().trim()
+      })
+      rs.on('end', () => { 
+        console.log(data) 
+        showPwd()
+      })
+    },
+    add: async (args) => {
+      const file = args[0]
+      const filePath = path.resolve(currentDir, file)
+      fs.writeFile(filePath, '')
     }
   }
 
@@ -60,11 +87,7 @@ const filename = () => {
       console.log('Invalid input')
       return
     }
-    try {
-      await operations[command](args)
-    } catch {
-      console.log('Operation failed')
-    }
+    await operations[command](args)
   }
 
   stdin.on('data', async (chunk) => {
