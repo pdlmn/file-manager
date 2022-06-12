@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs/promises'
+import os from 'os'
 import { homedir } from 'os'
 import { createReadStream } from 'fs'
 const { cwd, stdin, stdout } = process
@@ -125,6 +126,11 @@ const filename = () => {
     },
     mv: async (args) => {
       operations.rn(args)
+    },
+    os: {
+      '--EOL': () => {
+        console.log(JSON.stringify(os.EOL))
+      }
     }
   }
 
@@ -144,7 +150,11 @@ const filename = () => {
       console.log('Invalid input')
       return
     }
-    await operations[command](args)
+    if (typeof operations[command] === 'string') {
+      await operations[command](args)
+    } else if (typeof operations[command] === 'object') {
+      await operations[command][args[0]]()
+    }
   }
 
   stdin.on('data', async (chunk) => {
