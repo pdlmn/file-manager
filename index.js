@@ -67,8 +67,21 @@ const filename = () => {
     add: async (args) => {
       const file = args[0]
       const filePath = path.resolve(currentDir, file)
-      fs.writeFile(filePath, '')
+      if (await fileExists(filePath)) {
+        console.log('Operation failed')
+        return
+      }
+      await fs.writeFile(filePath, '')
+    },
+    rn: async (args) => {
+      const oldName = args[0]
+      const newName = args[1]
+      fs.rename(
+        path.resolve(currentDir, oldName),
+        path.resolve(currentDir, newName)
+      )
     }
+
   }
 
   if (!username) {
